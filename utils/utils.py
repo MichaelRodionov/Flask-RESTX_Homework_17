@@ -69,6 +69,7 @@ def movies_get(did=None, gid=None, page=None):
     This function takes parameters did and gid and filter movies by these parameters
     :param did: director_id
     :param gid: genre_id
+    :param page: number of page
     :return: filtered list of movies if gid and did are None, else return all movies
     """
     if did and not gid:
