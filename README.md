@@ -39,3 +39,5 @@ ___
 ✅ 500 error handler   
 ___
 ✅ Requests testing done by using request-collection in Postman App
+
+![requests](https://user-images.githubusercontent.com/106465054/199694485-6638edd1-6e6c-4f49-93ca-3e801d726dc5.png)
