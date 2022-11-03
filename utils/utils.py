@@ -64,7 +64,7 @@ def load_genres(data):
             db.session.add(d)
 
 
-def movies_get(did=None, gid=None):
+def movies_get(did=None, gid=None, page=None):
     """
     This function takes parameters did and gid and filter movies by these parameters
     :param did: director_id
@@ -82,8 +82,18 @@ def movies_get(did=None, gid=None):
             Movie.genre_id == gid, Movie.director_id == did)
         return s.movies_schema.dump(movies)
     else:
-        all_movies = db.session.query(Movie).all()
-        return s.movies_schema.dump(all_movies)
+        if page == '1':
+            all_movies = db.session.query(Movie).limit(5)
+            return s.movies_schema.dump(all_movies)
+        if page == '2':
+            all_movies = db.session.query(Movie).limit(5).offset(5)
+            return s.movies_schema.dump(all_movies)
+        if page == '3':
+            all_movies = db.session.query(Movie).limit(5).offset(10)
+            return s.movies_schema.dump(all_movies)
+        if page == '4':
+            all_movies = db.session.query(Movie).limit(5).offset(15)
+            return s.movies_schema.dump(all_movies)
 
 
 def movie_get(mid):

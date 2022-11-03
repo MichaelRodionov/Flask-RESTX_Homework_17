@@ -28,7 +28,8 @@ class MoviesView(Resource):
         """This view returns all movies or movies, filtered by director_id or/and genre_id"""
         did = request.args.get('director_id')
         gid = request.args.get('genre_id')
-        return u.movies_get(did, gid), 200
+        page = request.args.get('page')
+        return u.movies_get(did, gid, page), 200
 
     @staticmethod
     def post():
