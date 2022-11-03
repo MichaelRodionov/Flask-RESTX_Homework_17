@@ -82,16 +82,9 @@ def movies_get(did=None, gid=None, page=None):
             Movie.genre_id == gid, Movie.director_id == did)
         return s.movies_schema.dump(movies)
     else:
-        all_movies = db.session.query(Movie)
-        if page == '1':
-            all_movies = all_movies.limit(5)
-        if page == '2':
-            all_movies = all_movies.limit(5).offset(5)
-        if page == '3':
-            all_movies = all_movies.limit(5).offset(10)
-        if page == '4':
-            all_movies = all_movies.limit(5).offset(15)
-        return s.movies_schema.dump(all_movies)
+        if page and int(page) > 0:
+            all_movies = db.session.query(Movie).limit(5).offset(int(page) - 1)
+            return s.movies_schema.dump(all_movies)
 
 
 def movie_get(mid):
@@ -196,11 +189,15 @@ def director_get(did):
     """
     This function is called to get the director by director_id
     :param did: director_id
-    :return: director by director_id
+    :return: director by director_id and list of films
     """
+    director_dict = {}
     try:
-        director = db.session.query(Director).filter(Director.id == did).one()
-        return s.director_schema.dump(director)
+        movies = db.session.query(Movie.title, Movie.rating, Movie.year, Movie.trailer, Movie.description). \
+            join(Director, Director.id == Movie.director_id).filter(Director.id == did)
+        genre = db.session.query(Director).filter(Director.id == did).one()
+        director_dict[s.director_schema.dump(genre).get('name')] = s.movies_schema.dump(movies)
+        return director_dict
     except Exception as e:
         return str(e)
 
