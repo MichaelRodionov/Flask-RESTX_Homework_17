@@ -5,7 +5,10 @@ ___
 ✅ Tables fill up from **data.py** file in directory **/data/**   
 ___
 ✅ **GET** requests:
-- ***/movies/*** - return all movies   
+- ***/movies/?page=1*** - return movies 1-5   
+- ***/movies/?page=2*** - return movies 6-10   
+- ***/movies/?page=3*** - return movies 11-15   
+- ***/movies/?page=4*** - return movies 16-20   
 - ***/movies/?director_id=2*** - return all movies, where attribute **director_id** is 2  
 - ***/movies/?genre_id=4*** - return all movies, where attribute **genre_id** is 2  
 - ***/movies/?director_id=2&genre_id=4*** - return all movies, where attribute **director_id** is 2 and attribute **genre_id** is 4  
@@ -13,7 +16,7 @@ ___
 - ***/genres/*** - return all genres   
 - ***/movies/1*** - return movie with **id** = 1  
 - ***/directors/1*** - return director with **id** = 1  
-- ***/genres/1*** - return genre with **id** = 1   
+- ***/genres/1*** - return genre with **id** = 1 and list of films with this genre   
 _____
 ✅ **POST** requests:   
 - ***/movies/*** - is called to add new movie   
