@@ -1,5 +1,5 @@
 from app.models.models import db, Movie, Director, Genre
-from flask import request
+from flask import request, jsonify
 from app.schemes import schemes as s
 
 
@@ -253,13 +253,17 @@ def genre_post():
 
 def genre_get(gid):
     """
-    This function is called to get genre, chosen by genre_id
+    This function is called to get genre and a list of films with this genre, chosen by genre_id
     :param gid: genre_id
-    :return: genre by genre_id
+    :return: genre and list of films
     """
+    genre_dict = {}
     try:
+        movies = db.session.query(Movie.title, Movie.rating, Movie.year, Movie.trailer, Movie.description).\
+            join(Genre, Genre.id == Movie.genre_id).filter(Genre.id == gid)
         genre = db.session.query(Genre).filter(Genre.id == gid).one()
-        return s.genre_schema.dump(genre)
+        genre_dict[s.genre_schema.dump(genre).get('name')] = s.movies_schema.dump(movies)
+        return genre_dict
     except Exception as e:
         return str(e)
 
