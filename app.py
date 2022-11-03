@@ -25,7 +25,7 @@ genre_ns = api.namespace('genres')
 class MoviesView(Resource):
     @staticmethod
     def get():
-        """This view returns all movies or movies, filtered by director_id or/and genre_id"""
+        """This view returns all movies by pages or movies, filtered by director_id or/and genre_id"""
         did = request.args.get('director_id')
         gid = request.args.get('genre_id')
         page = request.args.get('page')

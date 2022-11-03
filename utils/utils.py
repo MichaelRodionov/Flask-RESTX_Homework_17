@@ -72,15 +72,14 @@ def movies_get(did=None, gid=None, page=None):
     :param page: number of page
     :return: filtered list of movies if gid and did are None, else return all movies
     """
-    if did and not gid:
+    if did and gid:
+        movies = db.session.query(Movie).filter(Movie.genre_id == gid, Movie.director_id == did)
+        return s.movies_schema.dump(movies)
+    elif did:
         movies = Movie.query.filter_by(director_id=did)
         return s.movies_schema.dump(movies)
-    if gid and not did:
+    elif gid:
         movies = Movie.query.filter_by(genre_id=gid)
-        return s.movies_schema.dump(movies)
-    if did and gid:
-        movies = db.session.query(Movie).filter(
-            Movie.genre_id == gid, Movie.director_id == did)
         return s.movies_schema.dump(movies)
     else:
         if page and int(page) > 0:
