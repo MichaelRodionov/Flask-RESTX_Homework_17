@@ -1,5 +1,5 @@
 from app.models.models import db, Movie, Director, Genre
-from flask import request, jsonify
+from flask import request
 from app.schemes import schemes as s
 
 
@@ -64,14 +64,14 @@ def load_genres(data):
             db.session.add(d)
 
 
-def movies_get(did=None, gid=None, page=None):
+def movies_get():
     """
     This function takes parameters did and gid and filter movies by these parameters
-    :param did: director_id
-    :param gid: genre_id
-    :param page: number of page
     :return: filtered list of movies if gid and did are None, else return all movies
     """
+    did = request.args.get('director_id')
+    gid = request.args.get('genre_id')
+    page = request.args.get('page')
     if did and gid:
         movies = db.session.query(Movie).filter(Movie.genre_id == gid, Movie.director_id == did)
         return s.movies_schema.dump(movies)
@@ -83,7 +83,7 @@ def movies_get(did=None, gid=None, page=None):
         return s.movies_schema.dump(movies)
     else:
         if page and int(page) > 0:
-            all_movies = db.session.query(Movie).limit(5).offset(int(page) - 1)
+            all_movies = db.session.query(Movie).limit(5).offset(5 * (int(page) - 1))
             return s.movies_schema.dump(all_movies)
 
 
@@ -172,6 +172,11 @@ def movie_delete(mid):
     return ""
 
 
+def directors_get():
+    all_directors = db.session.query(Director).all()
+    return s.directors_schema.dump(all_directors)
+
+
 def director_post():
     """
     This function is called to add new director to database
@@ -241,6 +246,11 @@ def director_delete(did):
     db.session.delete(director)
     db.session.commit()
     return ""
+
+
+def genres_get():
+    genres = db.session.query(Genre).all()
+    return s.genres_schema.dump(genres)
 
 
 def genre_post():

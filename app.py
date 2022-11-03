@@ -1,7 +1,6 @@
-from flask import Flask, request
+from flask import Flask
 from flask_restx import Resource, Api
-from app.models.models import db, Director, Genre
-from app.schemes import schemes as s
+from app.models.models import db
 from utils import utils as u
 from data.data import data
 
@@ -26,10 +25,7 @@ class MoviesView(Resource):
     @staticmethod
     def get():
         """This view returns all movies by pages or movies, filtered by director_id or/and genre_id"""
-        did = request.args.get('director_id')
-        gid = request.args.get('genre_id')
-        page = request.args.get('page')
-        return u.movies_get(did, gid, page), 200
+        return u.movies_get(), 200
 
     @staticmethod
     def post():
@@ -65,8 +61,7 @@ class DirectorsView(Resource):
     @staticmethod
     def get():
         """This view returns all directors"""
-        all_directors = db.session.query(Director).all()
-        return s.directors_schema.dump(all_directors), 200
+        return u.directors_get(), 200
 
     @staticmethod
     def post():
@@ -102,8 +97,7 @@ class GenresView(Resource):
     @staticmethod
     def get():
         """This view returns all genres"""
-        genres = db.session.query(Genre).all()
-        return s.genres_schema.dump(genres), 200
+        return u.genres_get(), 200
 
     @staticmethod
     def post():
