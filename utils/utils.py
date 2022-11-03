@@ -82,18 +82,16 @@ def movies_get(did=None, gid=None, page=None):
             Movie.genre_id == gid, Movie.director_id == did)
         return s.movies_schema.dump(movies)
     else:
+        all_movies = db.session.query(Movie)
         if page == '1':
-            all_movies = db.session.query(Movie).limit(5)
-            return s.movies_schema.dump(all_movies)
+            all_movies = all_movies.limit(5)
         if page == '2':
-            all_movies = db.session.query(Movie).limit(5).offset(5)
-            return s.movies_schema.dump(all_movies)
+            all_movies = all_movies.limit(5).offset(5)
         if page == '3':
-            all_movies = db.session.query(Movie).limit(5).offset(10)
-            return s.movies_schema.dump(all_movies)
+            all_movies = all_movies.limit(5).offset(10)
         if page == '4':
-            all_movies = db.session.query(Movie).limit(5).offset(15)
-            return s.movies_schema.dump(all_movies)
+            all_movies = all_movies.limit(5).offset(15)
+        return s.movies_schema.dump(all_movies)
 
 
 def movie_get(mid):
